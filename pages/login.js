@@ -1,4 +1,7 @@
 import { useState } from "react";
+import {userServiceFactory} from "../clientServices/userService";
+
+const userService = userServiceFactory();
 
 export default function Login() {
     const [username, setUsername] = useState("");
@@ -6,6 +9,7 @@ export default function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        userService.login(username, password).then();
     };
 
     const usernameHandler =  (e) => {
