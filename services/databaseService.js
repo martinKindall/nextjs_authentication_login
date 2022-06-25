@@ -9,21 +9,13 @@ const databaseService = () => {
             database : process.env.DB,
         }
     });
-    const table = 'lenguajes';
+    const table = 'users';
 
-    const getLenguages = () => {
+    const getUsers = () => {
         return knex(table).select();
     };
 
-    const crearLenguaje = (nombre, lanzamiento, tipado_estatico) => {
-        return knex(table).insert({
-            nombre: nombre,
-            lanzamiento: lanzamiento,
-            tipado_estatico: tipado_estatico
-        });
-    };
-
-    return {crearLenguaje, getLenguages};
+    return {getUsers};
 };
 
 module.exports = {
