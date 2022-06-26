@@ -19,7 +19,7 @@ export default withSession(async (req, res) => {
         const userCredentials = await dbService.getUser(username);
         if (await authService.validate(password, userCredentials.password) === true) {
             await saveSession({username}, req);
-            res.status(200).json(userCredentials);
+            res.status(200).json({username});
             return;
         }
     } catch (error) {

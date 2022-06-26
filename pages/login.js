@@ -1,17 +1,27 @@
 import { useState } from "react";
 import {userServiceFactory} from "../clientServices/userService";
+import useUser from "../lib/useUser";
 
 const userService = userServiceFactory();
 
 export default function Login() {
+    const { user, mutateUser } = useUser({
+        redirectTo: "/",
+        redirectIfFound: true,
+    });
+    
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        userService.login(username, password).then().catch(error => {
+        try {
+            mutateUser(
+                await userService.login(username, password)
+            );
+        } catch (error) {
             alert(error.response.data.error);
-        });
+        }
     };
 
     const usernameHandler =  (e) => {
@@ -23,22 +33,23 @@ export default function Login() {
     }
 
     return <div>
-        <form onSubmit={handleSubmit}>
-            <div className="imgcontainer">
-                <img src="img_avatar2.png" alt="Avatar" className="avatar"/>
-            </div>
+        {!user ? (<h1>Loading....</h1>) : 
+                <>{!user.isLoggedIn && <form onSubmit={handleSubmit}>
+                        <div className="imgcontainer">
+                            <img src="img_avatar2.png" alt="Avatar" className="avatar"/>
+                        </div>
 
-            <div className="container">
-                <label htmlFor="uname"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="uname" required
-                    onChange={usernameHandler}/>
+                        <div className="container">
+                            <label htmlFor="uname"><b>Username</b></label>
+                            <input type="text" placeholder="Enter Username" name="uname" required
+                                onChange={usernameHandler}/>
 
-                <label htmlFor="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psw" required
-                    onChange={passwordHandler}/>
+                            <label htmlFor="psw"><b>Password</b></label>
+                            <input type="password" placeholder="Enter Password" name="psw" required
+                                onChange={passwordHandler}/>
 
-                <button type="submit">Login</button>
-            </div>
-        </form>
+                            <button type="submit">Login</button>
+                        </div>
+                </form>}</>}
     </div>;
 }
