@@ -9,6 +9,7 @@ export default function Home({ user }) {
       </Head>
 
       <h2>Welcome to the home page {user.username}!</h2>
+      <a href='/api/logout'>Logout</a>
     </div>
   )
 }
