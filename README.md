@@ -1,5 +1,14 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Dependencies
+
+- NextJS https://nextjs.org/docs
+- Iron Sessions https://github.com/vvo/iron-session
+- Bcrypt https://www.npmjs.com/package/bcryptjs
+- Knex https://www.npmjs.com/package/knex
+- SWR https://www.npmjs.com/package/swr
+- MySQL https://www.npmjs.com/package/mysql
+
 ## Getting Started
 
 First, run the development server:
