@@ -1,10 +1,11 @@
 import { databaseServiceFactory } from "../../services/databaseService"
 import { authServiceFactory } from "../../services/authService"
+import withSession from "../../lib/session";
 
 const dbService = databaseServiceFactory();
 const authService = authServiceFactory();
 
-export default async function handler(req, res) {
+export default withSession(async (req, res) => {
     const ERROR_CREDENTIALS = "Invalid username and/or password";
 
     const method = req.method.toLowerCase();
@@ -17,6 +18,7 @@ export default async function handler(req, res) {
     try {
         const userCredentials = await dbService.getUser(username);
         if (await authService.validate(password, userCredentials.password) === true) {
+            await saveSession({username}, req);
             res.status(200).json(userCredentials);
             return;
         }
@@ -24,4 +26,9 @@ export default async function handler(req, res) {
         console.log(error);
     }
     res.status(403).json({error: ERROR_CREDENTIALS});
+})
+
+async function saveSession(user, request) {
+    request.session.set("user", user);
+    await request.session.save();
 }

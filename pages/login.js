@@ -10,7 +10,7 @@ export default function Login() {
     const handleSubmit = (e) => {
         e.preventDefault();
         userService.login(username, password).then().catch(error => {
-            console.error(error);
+            alert(error.response.data.error);
         });
     };
 
